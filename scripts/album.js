@@ -1,4 +1,4 @@
-var ablumPicasso = {
+var albumPicasso = {
   title: 'The Colors',
   artist: 'Pablo Picasso',
   label: 'Cubism',
@@ -13,7 +13,7 @@ var ablumPicasso = {
   ]
 };
 
-var ablumMarconi = {
+var albumMarconi = {
   title: 'The Telephone',
   artist: 'Guglielmo Marconi',
   label: 'EM',
@@ -28,6 +28,21 @@ var ablumMarconi = {
   ]
 };
 
+var albumEinstein = {
+  title: 'Relativity',
+  artist: 'Albert Einstein',
+  label: 'E=mc2',
+  year: '1905',
+  albumArtUrl: 'assets/images/album_covers/7.png',
+  songs: [
+    { title: 'Theory of everything', duration: '2:01' },
+    { title: 'Wormhole', duration: '5:03' },
+    { title: 'Nuclear forces', duration: '3:20' },
+    { title: 'The universe', duration: '4:14' },
+    { title: 'Speed of light', duration: '2:25' }
+  ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
     '<tr class="album-view-song-item">'
@@ -39,6 +54,12 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     return template;
 };
+
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
 var setCurrentAlbum = function(album) {
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
@@ -61,4 +82,14 @@ var setCurrentAlbum = function(album) {
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+
+     var albums = [albumPicasso, albumMarconi, albumEinstein];
+     var index = 1;
+     albumImages.addEventListener("click", function(event) {
+       setCurrentAlbum(albums[index]);
+       index++;
+       if (index == albums.length) {
+         index = 0;
+       }
+     });
  };

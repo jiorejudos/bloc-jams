@@ -1,7 +1,5 @@
 function forEach(pointsArray, callback) {
-  var index;
-  or (index = 0; index < pointsArray.length; i++) {
-     console.log(pointsArray[index]);
- }
- callback();
- }
+  for (var i = 0; i < pointsArray.length; i++) {
+     callback(pointsArray[i]);
+   }
+}
