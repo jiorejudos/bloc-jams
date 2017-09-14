@@ -1,4 +1,4 @@
-var ablumPicasso = {
+var albumPicasso = {
   title: 'The Colors',
   artist: 'Pablo Picasso',
   label: 'Cubism',
@@ -13,7 +13,7 @@ var ablumPicasso = {
   ]
 };
 
-var ablumMarconi = {
+var albumMarconi = {
   title: 'The Telephone',
   artist: 'Guglielmo Marconi',
   label: 'EM',
@@ -25,6 +25,21 @@ var ablumMarconi = {
     { title: 'Fits in your pocket', duration: '3:21' },
     { title: 'Can you hear me now?', duration: '3:14' },
     { title: 'Wrong phone number', duration: '2:15' }
+  ]
+};
+
+var albumEinstein = {
+  title: 'Relativity',
+  artist: 'Albert Einstein',
+  label: 'E=mc2',
+  year: '1905',
+  albumArtUrl: 'assets/images/album_covers/7.png',
+  songs: [
+    { title: 'Theory of everything', duration: '2:01' },
+    { title: 'Wormhole', duration: '5:03' },
+    { title: 'Nuclear forces', duration: '3:20' },
+    { title: 'The universe', duration: '4:14' },
+    { title: 'Speed of light', duration: '2:25' }
   ]
 };
 
@@ -61,4 +76,13 @@ var setCurrentAlbum = function(album) {
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+ };
+
+ var albumToggle = function(alubmPicasso, albumMacaroni, albumEinstein)
+ document.getElementById("btn").addEventListener("click", myFunction, false);
+
+ function myFunction() {
+   var albumToggle = document.getElementById("first");
+   albumToggle.className = (albumToggle.className === "activate") ? "" : "activate";
+
  };
