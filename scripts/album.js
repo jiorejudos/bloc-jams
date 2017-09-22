@@ -46,10 +46,10 @@ var albumEinstein = {
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
     '<tr class="album-view-song-item">'
-    ' <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + ' </td>'
-    ' <td class="song-item-title">' + songName + '</td>'
-    ' <td class="song-item-duration">' + songLength + '</td>'
-    '</tr>'
+  +  ' <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + ' </td>'
+  +  ' <td class="song-item-title">' + songName + '</td>'
+  +  ' <td class="song-item-duration">' + songLength + '</td>'
+  +  '</tr>'
     ;
 
     return template;
@@ -82,11 +82,18 @@ var setCurrentAlbum = function(album) {
 
 var findParentByClassName = function(element, targetClass) {
     if (element) {
-        var currentParent = element.parentElement;
-        while (currentParent.className !== targetClass && currentParent.className !== null) {
-            currentParent = currentParent.parentElement;
+      var parent = element.parentElement;
+      if (parent){
+        while(parent) {
+          if (parent.classList.contains(targetClass)){
+            return parent;
+          }
+          parent = parentElement;
         }
-        return currentParent;
+        console.log("No parent found with that class name");
+      } else {
+        console.log("no parent found")
+      }
     }
 };
 
@@ -107,6 +114,7 @@ var getSongItem = function(element) {
             return;
     }
 };
+
 
 var clickHandler = function(targetElement) {
   var songItem = getSongItem(targetElement);
@@ -160,13 +168,4 @@ var currentlyPlayingSong = null;
         }
      });
 
-     var albums = [albumPicasso, albumMarconi, albumEinstein];
-     var index = 1;
-     albumImages.addEventListener("click", function(event) {
-       setCurrentAlbum(albums[index]);
-       index++;
-       if (index == albums.length) {
-         index = 0;
-       }
-     });
  };
