@@ -154,6 +154,37 @@ var setCurrentAlbum = function(album) {
   var $previousButton = $('.main-controls .previous');
   var $nextButton = $('.main-controls .next');
 
+  var setSong = function() {
+    var songNumber = parseInt($(this).attr('data-song-number'));
+
+      if (currentlyPlayingSongNumber !== null) {
+        var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+        currentlyPlayingCell.html(currentlyPlayingSongNumber);
+      }
+      if (currentlyPlayingSongNumber !== songNumber) {
+        $(this).html(pauseButtonTemplate);
+        currentlyPlayingSongNumber = songNumber;
+        currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+          updatePlayerBarSong();
+      } else if (currentlyPlayingSongNumber === songNumber) {
+        $(this).html(playButtonTemplate);
+        $('.main-controls .play-pause').html(playerBarPlayButton);
+        currentlyPlayingSongNumber = null;
+        currentSongFromAlbum = null;
+
+      }
+
+      };
+
+      var getSongNumberCell = function(number) {
+        var songNumber = parseInt($(this).attr('data-song-number'));
+
+          if (currentlyPlayingSongNumber !== null) {
+            var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+            currentlyPlayingCell.html(currentlyPlayingSongNumber);
+          }
+        };
+
  $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
      $previousButton.click(previousSong);
