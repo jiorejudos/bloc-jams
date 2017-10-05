@@ -185,9 +185,29 @@ var setCurrentAlbum = function(album) {
   var $previousButton = $('.main-controls .previous');
   var $nextButton = $('.main-controls .next');
 
+  var $playFromPlayerBar = $('.main-controls .play-pause');
+
+  var togglePlayFromPlayerBar = function(){
+    if (currentSoundFile.pause() && $playFromPlayerBar.click){
+        var $songNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        $songNumberCell.html(pauseButtonTemplate);
+        $playFromPlayerBar.html(playerBarPauseButton);
+        currentSoundFile.play();
+    }
+
+    if (currentSoundFile.play() && $playFromPlayerBar.click){
+        var $songNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+        $songNumberCell.html(playButtonTemplate);
+        $playFromPlayerBar.html(playerBarPlayButton);
+        currentSoundFile.pause();
+    }
+
+};
 
  $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
      $previousButton.click(previousSong);
      $nextButton.click(nextSong);
+     $togglePlayFromPlayerBar.click();
+
  });
