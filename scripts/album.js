@@ -26,6 +26,8 @@ var getSongNumberCell = function(number) {
     return $('.song-item-number[data-song-number="' + number + '"]')
       };
 
+var filterTimeCode = function() {
+
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
     '<tr class="album-view-song-item">'
@@ -36,7 +38,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 
 
     var $row = $(template);
-
+    filterTimeCode = document.getElementById("time");
+}
     var clickHandler = function() {
       var songNumber = parseInt($(this).attr('data-song-number'));
 
@@ -48,7 +51,7 @@ var createSongRow = function(songNumber, songName, songLength) {
       	}
       	if (SetSong !== songNumber) {
           setSong(songNumber);
-          currentSoundFile.play();        
+          currentSoundFile.play();
 
           var $volumeFill = $('.volume .fill');
           var $volumeThumb = $('.volume .thumb');
@@ -70,7 +73,7 @@ var createSongRow = function(songNumber, songName, songLength) {
               currentSoundFile.pause();
           }
       	}
-
+}
         };
 
 
@@ -131,10 +134,23 @@ var updateSeekBarWhileSongPlays = function() {
       var seekBarFillRatio = this.getTime() / this.getDuration();
       var $seekBar = $('.seek-control . seek-bar');
 
+var filterTimeCode = function() {
+  var setCurrentTimeInPlayerBar = function(currentTime) {
+    var $seekBar = $('.current-time');
+
+    var setTotalTimeInPlayerBar = function(totalTime) {
+        var $seekBar = $('.total-time');
+
       updateSeekPercentage($seekBar, seekBarFillRatio);
+
+      filterTimeCode = document.getElementById("time");
     });
   }
 };
+}
+}
+}
+
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
   var offsetXPercent = seekBarFillRatio * 100;
@@ -281,6 +297,13 @@ var setupSeekBars = function() {
     }
 
 };
+
+var filterTimeCode = function(timeInSeconds) {
+  parseFloat();
+  Math.floor = function(time) {
+    return(x.xx);
+  }
+  };
 
  $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
