@@ -7,6 +7,12 @@ var setSong = function(songNumber) {
     preload: true
 });
 
+var seek = function(time) {
+  if (currentSoundFile) {
+    currentSoundFile.setTime(time);
+  }
+}
+
 setVolume(currentVolume);
   };
 
@@ -42,7 +48,13 @@ var createSongRow = function(songNumber, songName, songLength) {
       	}
       	if (SetSong !== songNumber) {
           setSong(songNumber);
-          currentSoundFile.play();
+          currentSoundFile.play();        
+
+          var $volumeFill = $('.volume .fill');
+          var $volumeThumb = $('.volume .thumb');
+          $volumeFill.width(currentVolume + '%');
+          $volumeThumb.css({left: currentVolume + '%'});
+
           $(this).html(pauseButtonTemplate);
           SetSong = currentAlbum.songs[songNumber - 1];
           updatePlayerBarSong();
@@ -51,6 +63,7 @@ var createSongRow = function(songNumber, songName, songLength) {
               $(this).html(pauseButtonTemplate);
               $('.main-controls .play-pause').html(playerBarPauseButton);
               currentSoundFile.play();
+              updateSeekBarWhileSongPlays();
           } else {
               $(this).html(playButtonTemplate);
               $('.main-controls .play-pause').html(playerBarPlayButton);
@@ -112,6 +125,69 @@ var setCurrentAlbum = function(album) {
         $albumSongList.append($newRow);
      };
 
+var updateSeekBarWhileSongPlays = function() {
+  if (currentSoundFile) {
+    currentSoundFile.bind('timeupdate', function(event) {
+      var seekBarFillRatio = this.getTime() / this.getDuration();
+      var $seekBar = $('.seek-control . seek-bar');
+
+      updateSeekPercentage($seekBar, seekBarFillRatio);
+    });
+  }
+};
+
+var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
+  var offsetXPercent = seekBarFillRatio * 100;
+  offsetXPercent = Math.max(0, offsetXPercent);
+  offsetXPercent = Math.min(100, offsetXPercent);
+  var percentageString = offsetXPercent + '%';
+  $seekBar.find('.fill').width(percentageString);
+  $seekBar.('.thumb').css({left: percentageString});
+};
+
+var setupSeekBars = function() {
+  var $seekBars = $('.player-bar .seek-bar');
+
+  $seekBars.click(function(event) {
+    var offsetX = event.pageX - $(this).offset().left;
+    var barWidth = $(this).width();
+    var seekBarFillRatio = offsetX / barWidth;
+
+    if ($(this).parent().attr('class') == 'seek-control') {
+      seek(seekBarFillRatio * currentSoundFile.getDuration());
+    } else {
+      setVolume(seekBarFillRatio * 100);
+    }
+
+    updateSeekPercentage($(this), seekBarFillRatio);
+  });
+
+  $seekBars.find('.thumb').mousedown(function(event) {
+
+    var $seekBar = $(this).parent();
+
+    $(document).bind('mousemove.thumb'), function(event) {
+      var offsetX = event.pageX - $seekBar.offset().left;
+      var barWidth = $seekBar.width();
+      var seekBarFillRatio = offsetX / barWidth;
+
+      if ($seekBar.parent().attr('class') == 'seek-control') {
+        seek(seekBarFillRatio * currentSoundFile.getDuration());
+      } else {
+        setVolume(seekBarFillRatio);
+      }
+
+      updateSeekPercentage($seekBar, seekBarFillRatio);
+    });
+
+    $(document).bind('mouseup.thumb', function () {
+      $(document).unbind('mousemove.thumb');
+      $(document).unbind('mouseup.thumb');
+    });
+  });
+};
+
+
      var updatePlayerBarSong = function() {
 
          $('.currently-playing .song-name').text(SetSong.title);
@@ -128,6 +204,7 @@ var setCurrentAlbum = function(album) {
     var currentSongIndex = trackIndex(currentAlbum, SetSong);
     currentSongIndex++;
     currentSoundFile.play();
+    updateSeekBarWhileSongPlays();
 
     if (currentSongIndex >= currentAlbum.songs.length) {
         currentSongIndex = 0;
@@ -154,6 +231,7 @@ var setCurrentAlbum = function(album) {
     if (currentSongIndex < 0) {
     currentSongIndex = currentAlbum.songs.lenth-1;
     currentSoundFile.play();
+    updateSeekBarWhileSongPlays();
 
     }
 
@@ -206,6 +284,7 @@ var setCurrentAlbum = function(album) {
 
  $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
+     setupSeekBars();
      $previousButton.click(previousSong);
      $nextButton.click(nextSong);
      $togglePlayFromPlayerBar.click();
