@@ -17,8 +17,9 @@ var createSongRow = function(songNumber, songName, songLength) {
 
           currentlyPlayingCell = getSongNumberCell(SetSong);
           currentlyPlayingCell.html(SetSong);
+          updateSeekPercentage($('.volume .seek-bar'), currentvolume/100);
       	}
-      	if (SetSong !== songNumber) {
+      	else if (SetSong !== songNumber) {
           setSong(songNumber);
           currentSoundFile.play();
 
@@ -41,8 +42,8 @@ var createSongRow = function(songNumber, songName, songLength) {
               $('.main-controls .play-pause').html(playerBarPlayButton);
               currentSoundFile.pause();
           }
-
-        };
+        }
+};
 
 
         var onHover = function(event) {
@@ -65,7 +66,8 @@ var createSongRow = function(songNumber, songName, songLength) {
       $row.find('.song-item-number').click(clickHandler);
       $row.hover(onHover, offHover);
       return $row;
-   }
+   };
+
    var setCurrentSong = function(songNumber) {
        if (currentSoundFile) {
            currentSoundFile.stop();
@@ -84,19 +86,19 @@ var createSongRow = function(songNumber, songName, songLength) {
         });
            setVolume(currentVolume);
        }
-   }
+   };
 
     var seek = function(time) {
         if (currentSoundFile) {
             currentSoundFile.setTime(time);
         }
-    }
+    };
 
    var setVolume = function(volume) {
        if (currentSoundFile) {
            currentSoundFile.setVolume(volume);
        }
-   }
+   };
 
    var changeCurrentSong = function(i) {
        var newSongNumber = currentlyPlayingSongNumber + i;
@@ -106,7 +108,7 @@ var createSongRow = function(songNumber, songName, songLength) {
            newSongNumber = 1;
        }
        setCurrentSong(newSongNumber);
-   }
+   };
 
    var getSongNumberCell = function(number) {
        return $('[data-song-number="' + number + '"]');
@@ -127,11 +129,11 @@ var setCurrentAlbum = function(album) {
     $albumImage.attr('src', album.albumArtUrl);
 
     $albumSongList.empty();
-};
+
      for (var i = 0; i < album.songs.length; i++) {
        var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
         $albumSongList.append($newRow);
-     };
+}};
 
      var trackIndex = function(album, song) {
          return album.songs.indexOf(song);
